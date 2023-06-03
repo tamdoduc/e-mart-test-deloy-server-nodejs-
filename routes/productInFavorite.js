@@ -1,9 +1,9 @@
 const express = require("express");
 const accounts = require("../Models/accounts");
-const productInFavorites = require("../models/productInFavorites");
+const productInFavorites = require("../Models/productInFavorites");
 const router = express.Router();
 
-const ProductInFavorites = require("../models/productInFavorites");
+const ProductInFavorites = require("../Models/productInFavorites");
 
 // @route GET api/productInFavorites/byAccountId
 // @desc get productInFavorites by accountId

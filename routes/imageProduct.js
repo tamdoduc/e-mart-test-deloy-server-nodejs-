@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const ImageProduct = require("../models/imageProducts");
+const ImageProduct = require("../Models/imageProducts");
 
 // @route GET api/imageProducts
 // @desc get image

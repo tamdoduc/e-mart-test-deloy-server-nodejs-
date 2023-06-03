@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const Color = require("../models/colors");
+const Color = require("../Models/colors");
 
 // @route GET api/colors
 // @desc get color

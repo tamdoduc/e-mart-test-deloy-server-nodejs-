@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const Bill = require("../models/bills");
-const Product = require("../models/products");
+const Bill = require("../Models/bills");
+const Product = require("../Models/products");
 
 // @route GET api/bills
 // @desc get 1 bill

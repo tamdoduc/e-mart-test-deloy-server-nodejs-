@@ -15,16 +15,19 @@ router.post("/register", async (req, res) => {
 
   // Simple validation
   if (!username || !password || !fullName || !email || !phoneNumber)
-    return res
-      .status(400)
-      .json({ success: false, message: "Missing information" });
+    return res.status(400).json({
+      set_attributes: { success: false, message: "Missing information" },
+    });
   try {
     //Check for existing user
     const user = await Account.findOne({ username });
     if (user)
-      return res
-        .status(400)
-        .json({ success: false, message: "Username already" });
+      return res.status(400).json({
+        set_attributes: {
+          success: false,
+          message: "Username already",
+        },
+      });
 
     // All good
     const hashedPassword = await argon2.hash(password);
@@ -38,15 +41,19 @@ router.post("/register", async (req, res) => {
     await newAccount.save();
 
     res.status(200).json({
-      success: true,
-      message: " Created",
+      set_attributes: {
+        success: true,
+        message: " Created",
+      },
       userId: newAccount._id,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      success: false,
-      message: " Internal server error",
+      set_attributes: {
+        success: false,
+        message: " Internal server error",
+      },
     });
   }
 });
@@ -65,18 +72,23 @@ router.post("/login", async (req, res) => {
   try {
     // Check for existing user
     const user = await Account.findOne({ username });
-    console.log(user)
+    console.log(user);
     if (!user)
-      return res
-        .status(400)
-        .json({ success: false, message: "Incorrect username " });
+      return res.status(400).json({
+        set_attributes: { success: false },
+        success: false,
+        message: "Incorrect username ",
+      });
 
     const passwordValid = await argon2.verify(user.password, password);
     if (!passwordValid)
-      return res
-        .status(400)
-        .json({ success: false, message: "Incorrect  password" });
+      return res.status(400).json({
+        set_attributes: { success: false },
+        success: false,
+        message: "Incorrect  password",
+      });
     res.json({
+      set_attributes: { success: true },
       success: true,
       message: "User logged in successfully",
       userId: user._id,
@@ -84,6 +96,7 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
+      set_attributes: { success: false },
       success: false,
       message: " Internal server error",
     });
@@ -98,11 +111,14 @@ router.get("/getInfo", async (req, res) => {
   try {
     const user = await Account.findOne({ _id: accountId });
     if (!user)
-      return res
-        .status(200)
-        .json({ success: false, message: "Account not found " });
+      return res.status(200).json({
+        set_attributes: { success: false },
+        success: false,
+        message: "Account not found ",
+      });
     else
       res.json({
+        set_attributes: { success: true },
         success: true,
         message: "Get Info successfully",
         userId: user,
@@ -110,6 +126,7 @@ router.get("/getInfo", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
+      set_attributes: { success: false },
       success: false,
       message: " Internal server error",
     });

@@ -3,7 +3,7 @@ const multer = require("multer");
 const uploadMultipartForm = multer().none();
 const router = express.Router();
 
-const Product = require("../models/products");
+const Product = require("../Models/products");
 
 router.get("/", (req, res) => res.send("PRODUCT ROUTE"));
 
@@ -302,6 +302,7 @@ router.get("/allNewest", async (req, res) => {
     });
   }
 });
+
 // @route GET api/products/newestCatalog
 // @desc Get Count Product newest
 // @access Public
@@ -409,6 +410,285 @@ router.get("/allByKeyWord", async (req, res) => {
     });
   }
 });
+// @route GET api/products/allByKeyWordF
+// @desc Get All Product By key word first
+// @access Public
+router.get("/allByKeyWordF", async (req, res) => {
+  const keyword = req.query.keyword;
+  try {
+    console.log("/" + keyword + "/");
+    const product = await Product.findOne({
+      nameProduct: {
+        $regex: keyword,
+        $options: "$i",
+      },
+    });
+    if (product)
+      res.json({
+        set_attributes: {
+          success: true,
+          nameProduct: product.nameProduct,
+          price: product.price,
+          idProduct: product._id,
+        },
+      });
+    else {
+      const product2 = await Product.findOne({
+        type: {
+          $regex: keyword,
+          $options: "$i",
+        },
+      });
+      if (product2)
+        res.json({
+          set_attributes: {
+            success: true,
+            nameProduct: product2.nameProduct,
+            price: product2.price,
+            idProduct: product2._id,
+          },
+          typeSearchTrue: "type",
+        });
+      else
+        res.status(404).json({
+          set_attributes: {
+            success: false,
+          },
+        });
+    }
+  } catch (error) {
+    //console.log(error);
+    res.status(500).json({
+      success: false,
+      message: " Internal server error",
+    });
+  }
+});
+
+// @route GET api/products/newestKeyword
+// @desc Get Product newest by keyword
+// @access Public
+router.get("/newestKeyword", async (req, res) => {
+  const keyword = req.query.keyword;
+  try {
+    console.log("/newestKeyword" + "/" + keyword + "/");
+    const product = await Product.findOne({
+      nameProduct: {
+        $regex: keyword,
+        $options: "i",
+      },
+      state: { $ne: "deleted" },
+    }).sort({ createdAt: -1 });
+    if (product)
+      res.json({
+        set_attributes: {
+          success: true,
+          nameProductNewest: product.nameProduct,
+          priceNewest: product.price,
+          idProductNewest: product._id,
+        },
+      });
+    else {
+      const product2 = await Product.findOne({
+        type: {
+          $regex: keyword,
+          $options: "i",
+        },
+        state: { $ne: "deleted" },
+      }).sort({ createdAt: -1 });
+      if (product2)
+        res.json({
+          set_attributes: {
+            success: true,
+            nameProductNewest: product2.nameProduct,
+            priceNewest: product2.price,
+            idProductNewest: product2._id,
+          },
+          typeSearchTrue: "type",
+        });
+      else
+        res.status(404).json({
+          set_attributes: {
+            success: false,
+          },
+        });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: " Internal server error",
+    });
+  }
+});
+// @route GET api/products/countSoldKeyword
+// @desc Get Product by count sold and key word
+// @access Public
+router.get("/countSoldKeyword", async (req, res) => {
+  const keyword = req.query.keyword;
+  try {
+    console.log("countSoldKeyword" + "/" + keyword + "/");
+    const product = await Product.findOne({
+      nameProduct: {
+        $regex: keyword,
+        $options: "i",
+      },
+      state: { $ne: "deleted" },
+    }).sort({ countSold: -1 });
+    if (product)
+      res.json({
+        set_attributes: {
+          success: true,
+          nameProductSold: product.nameProduct,
+          priceSold: product.price,
+          idProductSold: product._id,
+        },
+      });
+    else {
+      const product2 = await Product.findOne({
+        type: {
+          $regex: keyword,
+          $options: "i",
+        },
+        state: { $ne: "deleted" },
+      }).sort({ countSold: -1 });
+      if (product2)
+        res.json({
+          set_attributes: {
+            success: true,
+            nameProductSold: product2.nameProduct,
+            priceSold: product2.price,
+            idProductSold: product2._id,
+          },
+          typeSearchTrue: "type",
+        });
+      else
+        res.status(404).json({
+          set_attributes: {
+            success: false,
+          },
+        });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: " Internal server error",
+    });
+  }
+});
+// @route GET api/products/countStarKeyword
+// @desc Get Product by count star and key word
+// @access Public
+router.get("/countStarKeyword", async (req, res) => {
+  const keyword = req.query.keyword;
+  try {
+    console.log("/countStarKeyword" + "/" + keyword + "/");
+    const product = await Product.findOne({
+      nameProduct: {
+        $regex: keyword,
+        $options: "i",
+      },
+      state: { $ne: "deleted" },
+    }).sort({ countStar: -1 });
+    if (product)
+      res.json({
+        set_attributes: {
+          success: true,
+          nameProductStar: product.nameProduct,
+          priceStar: product.price,
+          idProductStar: product._id,
+        },
+      });
+    else {
+      const product2 = await Product.findOne({
+        type: {
+          $regex: keyword,
+          $options: "i",
+        },
+        state: { $ne: "deleted" },
+      }).sort({ countStar: -1 });
+      if (product2)
+        res.json({
+          set_attributes: {
+            success: true,
+            nameProductStar: product2.nameProduct,
+            priceStar: product2.price,
+            idProductStar: product2._id,
+          },
+          typeSearchTrue: "type",
+        });
+      else
+        res.status(404).json({
+          set_attributes: {
+            success: false,
+          },
+        });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: " Internal server error",
+    });
+  }
+});
+// @route GET api/products/discountKeyword
+// @desc Get Product newest by keyword
+// @access Public
+router.get("/discountKeyword", async (req, res) => {
+  const keyword = req.query.keyword;
+  try {
+    console.log("/discountKeyword" + "/" + keyword + "/");
+    const product = await Product.findOne({
+      nameProduct: {
+        $regex: keyword,
+        $options: "i",
+      },
+      state: { $ne: "deleted" },
+    }).sort({ discountValue: -1 });
+    if (product)
+      res.json({
+        set_attributes: {
+          success: true,
+          nameProductDiscount: product.nameProduct,
+          priceDiscount: product.price,
+          idProductDiscount: product._id,
+        },
+      });
+    else {
+      const product2 = await Product.findOne({
+        type: {
+          $regex: keyword,
+          $options: "i",
+        },
+        state: { $ne: "deleted" },
+      }).sort({ discountValue: -1 });
+      if (product2)
+        res.json({
+          set_attributes: {
+            success: true,
+            nameProductDiscount: product2.nameProduct,
+            priceDiscount: product2.price,
+            idProductDiscount: product2._id,
+          },
+          typeSearchTrue: "type",
+        });
+      else
+        res.status(404).json({
+          set_attributes: {
+            success: false,
+          },
+        });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: " Internal server error",
+    });
+  }
+});
 
 // @route GET api/products/catalogByKeyWord
 // @desc Get (Catalog) Product By key word
@@ -497,6 +777,7 @@ router.get("/allByKeyWordMinMaxStar", async (req, res) => {
     });
   }
 });
+
 // @route GET api/products/catalogByKeyWordMinMaxStar
 // @desc Get (Catalog) Product By key word Min Max Star
 // @access Public

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const ProductInBill = require("../models/productInBills");
+const ProductInBill = require("../Models/productInBills");
 
 // @route GET api/productInBills
 // @desc get productInBill

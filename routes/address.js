@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const Address = require("../models/address");
+const Address = require("../Models/address");
 
 // @route GET api/address
 // @desc get address
